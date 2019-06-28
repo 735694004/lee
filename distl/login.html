@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>登录</title>
+		<link rel="stylesheet" type="text/css" href="css/login.css" />
+	</head>
+	<body>
+		<div class="new-2019">
+			<div class="logo">
+				<a href="#">
+					<img width="295px" height="38px" src="imgs/loginLogo.png" alt="中酒网 中酒连锁">
+				</a>
+				<p>欢迎登陆</p>
+			</div>
+			<div class="banner">
+				<div class="banner-center">
+					<img src="imgs/loginBannerImg.png" class="img1">
+					<div class="loginStyle">
+						<ul class="style">
+							<li class="active">
+								<a href="javascript:void(0)" class="sao">扫码登录</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">账户登录</a>
+							</li>
+						</ul>
+						<div class="tab-cont">
+							<div class="cont1">
+								<div class="saom">
+									<p>
+										<img src="imgs/GetQR.gif">
+									</p>
+									<span>打开中酒网App</span>
+									<span class="sp1">扫描二维码</span>
+								</div>
+								<img src="imgs/sao_2.png" class="img2">
+							</div>
+							
+							<div class="cont3">
+								<div class="loginFrame">
+									<div class="inputBox">
+										<div class="iconBox">
+											<img width="16" src="imgs/icon_user.png" alt="">
+										</div>
+										<!-- tabindex用tab键切换输入框顺序 -->
+										<input id="loginname" type="text" name="loginname" placeholder="请输入用户名" tabindex="1" autocomplete="on" >
+									</div>
+									<div class="inputBox">
+										<div class="iconBox">
+											<img width="16" src="imgs/icon_lock.png" alt="">
+										</div>
+										<input id="password" type="password" name="password" placeholder="请输入密码" tabindex="2" autocomplete="off" >
+									</div>
+									<input id="loginsubmit" class="btn-enter" value="登录">
+								</div>
+								<div class="tipsText">
+									<p class="toggleLoginBtn" style="cursor:pointer" data-status="1">短信验证码登录</p>
+									<a href="/findpassword">忘记密码</a>
+								</div>
+							</div>
+							<div class="registerNow">
+								<a href="#">
+									<img width="16" src="imgs/icon-qq.png" alt="QQ">
+									<span style="color:black">QQ</span>
+								</a>
+								<span> | </span>
+								<a href="#">
+									<img width="16" src="imgs/icon-weibo.png" alt="微博">
+									<span>微博</span>
+								</a>
+								<span> | </span>
+								<a href="#">
+									<img width="16" src="imgs/icon-weixin.png" alt="微信">
+									<span>微信</span>
+								</a>
+								<span> | </span>
+								<a href="register.html" target="_blank">立即注册</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="w">
+			<div id="footer" style="padding-top:30px;">
+				<div class="copyright">Copyright © 2019 &nbsp;&nbsp;中酒网&nbsp;版权所有</div>
+			</div>
+			<p style="font-size: 30px;color:red;">登录账号：15236075253密码：123456</p>
+		</div>
+		<script src="jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(".style>li").click(function() {
+					$(".style>li").toggleClass("active");
+				})
+				$(".style>li:last").click(function() {
+					$(".cont1").css("display", "none");
+					$(".cont3").css("display", "block");
+				})
+				$(".style>li:first").click(function() {
+					$(".cont1").css("display", "block");
+					$(".cont3").css("display", "none");
+				})
+
+
+				$("#loginsubmit").click(function(e){
+					e.preventDefault();
+					$.post("http://47.104.244.134:8080/userlogin.do", {
+						name: $("#loginname").val(),
+						password: $("#password").val(),
+					}).done(data => {
+						console.log(data)
+						if(data.code==0){							
+							location.href=("index.html?token="+data.data.token+"&name="+$("#loginname").val());
+						}else{
+							alert("用户名或密码不正确")
+						}
+					
+					})
+				})
+
+
+				
+			})
+		</script>
+	</body>
+</html>

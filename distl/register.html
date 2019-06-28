@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="css/register.css" />
+	<script src="jquery.js" type="text/javascript" charset="utf-8"></script>
+	
+	<body>
+		<div class="top">
+			<div class="w cl">
+				<span class="favorite"><i></i><a href="javascript:;">收藏商城</a></span>
+				<ul class="quick_list">
+					<li class="loginbar">您好！欢迎来到商城！<a href="login.html">[登录]</a>&nbsp;<a href="javascript:regist()">[免费注册]</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="w">
+			<div id="logo"><a href="javascript:;"><img src="imgs/zhongjiuloginlog.png" alt="商城" height="60"></a><b>欢迎注册</b></div>
+		</div>
+
+		<div class="w" id="regist">
+			<div class="mt">
+				<div class="extra">
+					<span>我已注册，现在就&nbsp;<a href="login.html" class="flk13">登录</a></span> </div>
+			</div>
+
+			<div class="mc">
+				<form action="login.html" method="">
+					<div class="form">
+						<div class="item" id="select-cellPhone">
+							<span class="label">手机号码：</span>
+							<div class="fl item-ifo">
+								<div class="o-intelligent-cellPhone">
+									<input type="text" id="cellPhone" name="cellPhone" class="text" tabindex="2" autocomplete="off" onpaste="return false;">
+																	
+									<label id="cellPhone_error" style="display: none;" class="error">请输入正确的手机号码</label>
+								</div>
+							</div>
+						</div>
+						<div class="item hide" id="authcodeDiv">
+							<span class="label">滑块验证：</span>
+							<div class="fl item-ifo" >
+								<input type="text" id="huakuai" class="text" >
+							</div>
+						</div>
+						<div class="item hide" id="password">
+							<span class="label">请设置密码：</span>
+							<div class="fl item-ifo" >
+								<input type="text" id="pas" class="text" autocomplete="off">
+								<label id="pas-error" style="display: none;" class="error">密码长度只能在6-20位字符之间，不包含空格</label>
+							</div>
+						</div>
+						<div class="item hide" id="opassword">
+							<span class="label">请确认密码：</span>
+							<div class="fl item-ifo" >
+								<input type="text" id="opas" class="text" autocomplete="off">
+								<label id="opas-error" style="display: none;" class="error">请保证两次输入密码的一致</label>
+							</div>
+						</div>
+						<div class="item hide" id="oconfirm">
+							<span class="label">手机验证码：</span>
+							<div class="fl item-ifo" >
+								<input type="texy" id="yzm" class="text"  style="width:40px;margin-right: 10px;"/>
+								<input type="text" id="ooconfirm" class="text" style="width:40px" autocomplete="off">
+								<span id="con" style="background:#F4F4F4">获取验证码</span>
+								<label id="yzm-error" style="display: none;" class="error">验证码输入错误</label>
+							</div>
+						</div>
+						<div class="readfile" >
+							<label class="read">
+								 <input type="checkbox" class="checkbox" id="readme">我已阅读并同意《<a href="#" target="_blank" style="color:#e3393c" id="protocol">用户注册协议</a>》				 
+							</label> 
+							<input   type="button" value="立即注册" id="btn" style="cursor:pointer" >                 
+						</div>
+						
+					</div>
+				</form>
+				
+			</div>
+		</div>
+		<div class="w">
+			<div id="footer">
+				<div class="copyright" style="text-align:center;padding-bottom:30px;margin:10px 0;">Copyright©2004-2015&nbsp;&nbsp; 中酒网 &nbsp;版权所有</div>
+			</div>
+		</div>
+		<script src="jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#cellPhone").blur(function(){
+					var reg1=/^1(3|4|5|7|8|9)\d{9}$/;
+					if($("#cellPhone").val().match(reg1)==null){
+						$("#cellPhone_error").show();
+					}else{
+						$("#cellPhone_error").hide();
+					}
+				})//验证手机号
+								
+				$("#pas").blur(function(){
+					var reg2=/^[\x21-\x7E]{6,20}$/;
+					if($("#pas").val().match(reg2)==null){
+						$("#pas-error").show();
+					}else{
+						$("#pas-error").hide();
+					}
+				})//验证密码格式
+				
+				$("#opas").blur(function(){
+					 if ($("#pas").val() != $("#opas").val()){
+						$("#opas-error").show();
+					}else{
+						$("#opas-error").hide();
+					}
+				})//核对两次输入的密码是否一样
+				
+				
+				$("#con").click(function () {       
+				    var code = parseInt((Math.random() * 9 + 1) * 1000);
+				    $("#ooconfirm").val(code);
+				})//获取六位验证码
+				
+				$("#yzm").blur(function(){
+					if ($("#ooconfirm").val() != $("#yzm").val()){
+						$("#yzm-error").show();
+					}else{
+						$("#yzm-error").hide();
+					}
+				})
+				
+				$("#btn").click(function (e) {
+				    if (!$("#readme").prop("checked")) {
+						e.preventDefault();
+				        alert("请阅读并同意《用户注册协议》")				        
+				    } else {
+				        $.post("http://47.104.244.134:8080/usersave.do", {
+				             username: $("#cellPhone").val(), 
+							 password: $("#pas").val(), 
+							 email: $("#cellPhone").val()+"@163.com", 
+							 sex: 1,
+				             }).done(function (data) {                      
+				                if(data.code==0){                                
+									console.log("用户注册成功");
+							   }else{
+				                    alert("用户名已存在");
+				                }                   
+				        })                    
+				        $("#btn").attr("href","login.html?"+"username="+$("#cellPhone").val()+",pw="+$("#pas").val() )      
+				    }
+				})  
+
+			})
+			
+		</script>	
+	</body>
+</html>
